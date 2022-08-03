@@ -8,6 +8,8 @@ namespace GiftCodeManager.Models
     {
         [Key,ForeignKey("Gift")]
         public int Gift_Id { get; set; }
+        [Required(ErrorMessage ="enter rule name")]
+        [Column(TypeName = "nvarchar(255)")]
         public string Rule_Name { get; set;}
         public double Gift_Amount { get; set; }
         public DateTime StartTime { get; set; }

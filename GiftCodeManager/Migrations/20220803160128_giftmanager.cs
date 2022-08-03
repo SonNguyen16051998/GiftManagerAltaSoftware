@@ -13,17 +13,17 @@ namespace GiftCodeManager.Migrations
                 {
                     Campaign_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Campaign_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Campaign_Name = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     Auto_Update = table.Column<bool>(type: "bit", nullable: false),
                     CheckCusJoin_OnlyOnce = table.Column<bool>(type: "bit", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     Code_UsageLimit = table.Column<int>(type: "int", nullable: false),
                     Unlimited = table.Column<bool>(type: "bit", nullable: false),
                     Code_Count = table.Column<int>(type: "int", nullable: false),
-                    Charset = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Charset = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     Code_Length = table.Column<int>(type: "int", nullable: false),
-                    Prefix = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Postfix = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Prefix = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    Postfix = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -40,13 +40,15 @@ namespace GiftCodeManager.Migrations
                 {
                     Customer_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Customer_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    email = table.Column<string>(type: "varchar(30)", nullable: false),
+                    Customer_Name = table.Column<string>(type: "nvarchar(50)", nullable: false),
+                    PhoneNo = table.Column<string>(type: "varchar(15)", nullable: false),
                     Date_Of_Birth = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Position = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Type_Of_Business = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Location = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Is_Block = table.Column<bool>(type: "bit", nullable: false)
+                    Position = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    Type_Of_Business = table.Column<string>(type: "nvarchar(255)", nullable: true),
+                    Location = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    Is_Block = table.Column<bool>(type: "bit", nullable: false),
+                    Password = table.Column<string>(type: "varchar(15)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -79,15 +81,15 @@ namespace GiftCodeManager.Migrations
                 columns: table => new
                 {
                     Campaign_Id = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
                     Code_redemption_limit = table.Column<int>(type: "int", nullable: false),
                     Created_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Unlimited = table.Column<bool>(type: "bit", nullable: false),
                     Code_count = table.Column<int>(type: "int", nullable: false),
-                    Charset = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Charset = table.Column<string>(type: "varchar(20)", nullable: false),
                     Code_Length = table.Column<int>(type: "int", nullable: false),
-                    Prefix = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Postfix = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Prefix = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Postfix = table.Column<string>(type: "varchar(20)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -106,8 +108,8 @@ namespace GiftCodeManager.Migrations
                 {
                     Gift_Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Gift_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Gift_Name = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     Code_Count = table.Column<int>(type: "int", nullable: false),
                     Active = table.Column<bool>(type: "bit", nullable: false),
                     Campaign_Id = table.Column<int>(type: "int", nullable: false)
@@ -156,7 +158,7 @@ namespace GiftCodeManager.Migrations
                 columns: table => new
                 {
                     Gift_Id = table.Column<int>(type: "int", nullable: false),
-                    Rule_Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Rule_Name = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     Gift_Amount = table.Column<double>(type: "float", nullable: false),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),

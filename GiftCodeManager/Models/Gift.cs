@@ -8,7 +8,10 @@ namespace GiftCodeManager.Models
     {
         [Key]
         public int Gift_Id  { get; set; }
+        [Required(ErrorMessage ="enter gift name")]
+        [Column(TypeName ="nvarchar(255)")]
         public string Gift_Name { get; set;}
+        [Column(TypeName = "nvarchar(255)")]
         public string Description { get; set; }
         public int Code_Count { get; set; }
         public bool Active { get; set; }

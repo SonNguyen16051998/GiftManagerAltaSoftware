@@ -14,6 +14,7 @@ namespace GiftCodeManager.Models
         }
         protected override void OnModelCreating(ModelBuilder model)
         {
+            //ràng buộc 2 khóa chính  1 bảng cần sử dụng fluent API
             model.Entity<Usedbarcode_Customer>().HasKey(e => new { e.Customer_Id, e.Barcode_Id });
 
             model.Entity<Winner>().HasKey(e => new { e.Customer_Id, e.Gift_Id });

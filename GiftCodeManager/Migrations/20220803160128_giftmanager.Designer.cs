@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiftCodeManager.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220731190749_giftmanager")]
+    [Migration("20220803160128_giftmanager")]
     partial class giftmanager
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -27,10 +27,13 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Charset")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Code")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Code_Length")
                         .HasColumnType("int");
@@ -45,10 +48,12 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Postfix")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.Property<string>("Prefix")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(20)");
 
                     b.Property<bool>("Unlimited")
                         .HasColumnType("bit");
@@ -69,10 +74,11 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Campaign_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Charset")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<bool>("CheckCusJoin_OnlyOnce")
                         .HasColumnType("bit");
@@ -87,7 +93,7 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
@@ -96,10 +102,10 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("time");
 
                     b.Property<string>("Postfix")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Prefix")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -123,7 +129,8 @@ namespace GiftCodeManager.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Customer_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<DateTime>("Date_Of_Birth")
                         .HasColumnType("datetime2");
@@ -132,16 +139,26 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Location")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("PhoneNo")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("varchar(15)");
 
                     b.Property<string>("Position")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Type_Of_Business")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("email")
+                        .IsRequired()
+                        .HasColumnType("varchar(30)");
 
                     b.HasKey("Customer_Id");
 
@@ -165,10 +182,11 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Gift_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Gift_Id");
 
@@ -204,7 +222,8 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Rule_Name")
-                        .HasColumnType("nvarchar(max)");
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
