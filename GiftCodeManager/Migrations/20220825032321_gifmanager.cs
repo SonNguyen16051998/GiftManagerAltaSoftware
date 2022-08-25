@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace GiftCodeManager.Migrations
 {
-    public partial class giftmanager : Migration
+    public partial class gifmanager : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -24,6 +24,7 @@ namespace GiftCodeManager.Migrations
                     Code_Length = table.Column<int>(type: "int", nullable: false),
                     Prefix = table.Column<string>(type: "nvarchar(20)", nullable: true),
                     Postfix = table.Column<string>(type: "nvarchar(20)", nullable: true),
+                    Activated_Code = table.Column<int>(type: "int", nullable: false),
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     StartTime = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndDate = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -47,8 +48,8 @@ namespace GiftCodeManager.Migrations
                     Position = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     Type_Of_Business = table.Column<string>(type: "nvarchar(255)", nullable: true),
                     Location = table.Column<string>(type: "nvarchar(255)", nullable: false),
-                    Is_Block = table.Column<bool>(type: "bit", nullable: false),
-                    Password = table.Column<string>(type: "varchar(15)", nullable: false)
+                    Spin_Number = table.Column<int>(type: "int", nullable: false),
+                    Password = table.Column<string>(type: "varchar(255)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -87,6 +88,7 @@ namespace GiftCodeManager.Migrations
                     Unlimited = table.Column<bool>(type: "bit", nullable: false),
                     Code_count = table.Column<int>(type: "int", nullable: false),
                     Charset = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Scanned = table.Column<int>(type: "int", nullable: false),
                     Code_Length = table.Column<int>(type: "int", nullable: false),
                     Prefix = table.Column<string>(type: "varchar(20)", nullable: false),
                     Postfix = table.Column<string>(type: "varchar(20)", nullable: false)

@@ -16,8 +16,10 @@ namespace GiftCodeManager.Models
         [Column(TypeName =("nvarchar(50)"))]
         [Required(ErrorMessage ="enter your name")]
         public string Customer_Name { get; set; }
+
         [Column(TypeName = ("varchar(15)"))]
         [Required(ErrorMessage ="enter your phone numer")]
+        [DataType(DataType.PhoneNumber)]
         public string PhoneNo { get; set; }
         public DateTime Date_Of_Birth { get; set; }
         [Column(TypeName = ("nvarchar(255)"))]
@@ -27,12 +29,12 @@ namespace GiftCodeManager.Models
         [Column(TypeName = ("nvarchar(255)"))]
         [Required]
         public string Location { get; set; }
-        public bool Is_Block { get; set; }
-        [Column(TypeName =("varchar(15)")),MinLength(6,ErrorMessage ="password to 6-15 character")]
+        public int Spin_Number { get; set; }
+        [Column(TypeName =("varchar(255)")),MinLength(6,ErrorMessage ="password to 6-15 character")]
         [Required(ErrorMessage ="enter password"),DataType(DataType.Password)]
         public string Password { get; set; }
         [NotMapped]
-        [Column(TypeName = ("varchar(15)")), MinLength(6, ErrorMessage = "password to 6-15 character")]
+        [Column(TypeName = ("varchar(255)")), MinLength(6, ErrorMessage = "password to 6-15 character")]
         [Required(ErrorMessage = "enter compare password")]
         [Compare("Password",ErrorMessage ="retype pass not match")]
         [DataType(DataType.Password)]

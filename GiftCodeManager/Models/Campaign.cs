@@ -27,6 +27,7 @@ namespace GiftCodeManager.Models
         public string Prefix { get; set; }
         [Column(TypeName = "nvarchar(20)")]
         public string Postfix { get; set; }
+        public int Activated_Code { get; set; }
         public DateTime StartDate { get; set; }
         public TimeSpan StartTime { get; set; }
         public DateTime EndDate { get; set; }

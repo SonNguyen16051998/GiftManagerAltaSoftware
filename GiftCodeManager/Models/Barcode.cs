@@ -21,6 +21,7 @@ namespace GiftCodeManager.Models
         [Required]
         [Column(TypeName ="varchar(20)")]
         public string Charset { get; set; }
+        public int Scanned { get; set; }
         [Required]
         public int Code_Length { get; set; }
         [Required]

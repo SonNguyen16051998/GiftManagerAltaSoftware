@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiftCodeManager.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220803160128_giftmanager")]
-    partial class giftmanager
+    [Migration("20220825032321_gifmanager")]
+    partial class gifmanager
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -55,6 +55,9 @@ namespace GiftCodeManager.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(20)");
 
+                    b.Property<int>("Scanned")
+                        .HasColumnType("int");
+
                     b.Property<bool>("Unlimited")
                         .HasColumnType("bit");
 
@@ -69,6 +72,9 @@ namespace GiftCodeManager.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Activated_Code")
+                        .HasColumnType("int");
 
                     b.Property<bool>("Auto_Update")
                         .HasColumnType("bit");
@@ -135,16 +141,13 @@ namespace GiftCodeManager.Migrations
                     b.Property<DateTime>("Date_Of_Birth")
                         .HasColumnType("datetime2");
 
-                    b.Property<bool>("Is_Block")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("varchar(15)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PhoneNo")
                         .IsRequired()
@@ -152,6 +155,9 @@ namespace GiftCodeManager.Migrations
 
                     b.Property<string>("Position")
                         .HasColumnType("nvarchar(255)");
+
+                    b.Property<int>("Spin_Number")
+                        .HasColumnType("int");
 
                     b.Property<string>("Type_Of_Business")
                         .HasColumnType("nvarchar(255)");
