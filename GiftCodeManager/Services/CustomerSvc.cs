@@ -17,7 +17,10 @@ namespace GiftCodeManager.Services
         Task<bool> SpinLucky(ViewSpin spin);
         Task<List<Winner>> GetAllWinner();
         Task<List<Winner>> GetAllGiftByID(int id);
-        Task<int> UpdateProfile(Customer customer);
+        Task<int> UpdateProfile(Customer customer);//cập nhật thông tin cá nhân
+        Task<int> ChangePass(ViewChangePass changePass);// đổi mật khẩu
+        Task<bool> isPass(string email,string pass);// kiểm tra mataj khẩu củ
+        Task<bool> isEmail(string email);// kiểm tra email có tồn tại hay không
     }
     public class CustomerSvc:ICustomer
     {
@@ -80,7 +83,7 @@ namespace GiftCodeManager.Services
                     winner.Win_Date = DateTime.Now;
                     winner.Sent_Gift_Status = false;
                     await _context.Winners.AddAsync(winner);
-                    await _context.SaveChangesAsync();// nếu trúng thưởng khách hàng được thêm vào bảng winner
+                    await _context.SaveChangesAsync();
                 }
                 return true;
             }
@@ -90,9 +93,9 @@ namespace GiftCodeManager.Services
         public async Task<List<Winner>> GetAllWinner()
         {
             List<Winner> listCus=new List<Winner>();
-            listCus = await _context.Winners.OrderByDescending(x=>x.Win_Date)
-                /*.Include(x => x.Customer)
-                .Include(x => x.Gift)*/
+            listCus = await _context.Winners.OrderByDescending(x => x.Win_Date)
+                .Include(x => x.Customer)
+                .Include(x => x.Gift)
                 .ToListAsync();
             return listCus;
         }
@@ -100,8 +103,8 @@ namespace GiftCodeManager.Services
         {// hiển thị theo id khachsh hàng
             List<Winner> listCus = new List<Winner>();
             listCus = await _context.Winners.Where(x=>x.Customer_Id==id)
-                /*.Include(x => x.Customer)
-                .Include(x => x.Gift)*/
+                .Include(x => x.Customer)
+                .Include(x => x.Gift)
                 .ToListAsync();
             return listCus;
         }
@@ -119,6 +122,69 @@ namespace GiftCodeManager.Services
                 stt=0;
             }
             return stt;
+        }
+
+        public async Task<int> ChangePass(ViewChangePass changePass)
+        {
+            int stt = 0;
+            try
+            {
+                Customer cus=_context.Customers.Where(x=>x.email==changePass.email).FirstOrDefault();
+                cus.Password = changePass.newPassword;
+                _context.Customers.Update(cus);
+                await _context.SaveChangesAsync();
+                stt = cus.Customer_Id;
+            }
+            catch
+            {
+                stt = 0;
+            }
+            return stt;
+        }
+
+        public async Task<bool> isPass(string email,string pass)
+        {
+            bool ret=false;
+            try
+            {
+                Customer cus =await _context.Customers.Where(x => x.email == email && x.Password==pass)
+                    .FirstOrDefaultAsync();
+                if(cus!=null)
+                {
+                    ret=true;
+                }
+                else
+                {
+                    ret=false;
+                }
+            }
+            catch
+            {
+                ret = false;
+            }
+            return ret;
+        }
+
+        public async Task<bool> isEmail(string email)
+        {
+            bool ret = false;
+            try
+            {
+                Customer cus = await _context.Customers.Where(x => x.email == email).FirstOrDefaultAsync();
+                if (cus != null)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret=false;
+                }
+            }
+            catch
+            {
+                ret = false;
+            }
+            return ret;
         }
     }
 }

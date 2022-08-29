@@ -20,6 +20,6 @@ namespace GiftCodeManager.Models
         public DayOfWeek DayOfWeek { get; set; }
         public TimeSpan StartTime_Repeat { get; set; }
         public TimeSpan EndTime_Repeat { get; set; }
-        public Gift Gift { get; set; }
+        public virtual Gift Gift { get; set; }
     }
 }

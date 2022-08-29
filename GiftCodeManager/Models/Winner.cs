@@ -12,7 +12,7 @@ namespace GiftCodeManager.Models
         public int Gift_Id { get; set; }
         public DateTime Win_Date { get; set; }
         public bool Sent_Gift_Status { get; set; }
-        public Customer Customer { get; set; }
-        public Gift Gift { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual Gift Gift { get; set; }
     }
 }

@@ -14,6 +14,7 @@ using GiftCodeManager.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace GiftCodeManager
 {
@@ -32,6 +33,11 @@ namespace GiftCodeManager
             services.AddDbContext<DataContext>(option =>
                 option.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllersWithViews();
+
+            services.AddControllersWithViews()
+                 .AddNewtonsoftJson(options =>
+                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+             );
 
             services.AddTransient<ICustomer, CustomerSvc>();
             services.AddTransient<IManager, ManagerSvc>();

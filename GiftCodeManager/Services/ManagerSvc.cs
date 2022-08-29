@@ -20,6 +20,11 @@ namespace GiftCodeManager.Services
         Task<List<Usedbarcode_Customer>> GetBarcodeHistory();
         Task<int> ScanBarcode(Usedbarcode_Customer usedbarcode); 
         Task<List<Campaign>> DetailsCampaign(int id);
+        Task<bool> isPass(string email, string pass);
+        Task<bool> isEmail(string email);
+        Task<int> ChangePass(ViewChangePass changePass);
+        Task<List<Rule>> GetRules();
+        Task<List<Customer>> GetCustomers();
     }
     public class ManagerSvc:IManager
     {
@@ -47,7 +52,7 @@ namespace GiftCodeManager.Services
                 .Include(x=>x.Gifts)
                 .ToListAsync();    
             return campaigns;
-        }
+        }// hiển thị toàn bộ chiến dịch
 
         public async Task<List<Gift>> GetWinnerByCampaign(int id)
         {
@@ -164,9 +169,12 @@ namespace GiftCodeManager.Services
         public async Task<List<Usedbarcode_Customer>> GetBarcodeHistory()
         {// lịch sử quét mã
             List<Usedbarcode_Customer> usedbarcodes = new List<Usedbarcode_Customer>();
-            usedbarcodes=await _context.Usedbarcode_Customers.ToListAsync();
+            usedbarcodes=await _context.Usedbarcode_Customers
+                .Include(x=>x.Barcode)
+                .Include(x=>x.Customer)
+                .ToListAsync();
             return usedbarcodes;
-        }
+        }//lịch sử người dùng scan barcode
 
         public async Task<List<Campaign>> DetailsCampaign(int id)
         {// chi tiết chiến dịch
@@ -176,7 +184,84 @@ namespace GiftCodeManager.Services
                 .Include(x=>x.Gifts)
                 .ToListAsync();
             return details;
+        }// chi tiết chiến dịch
+
+        public async Task<int> ChangePass(ViewChangePass changePass)
+        {
+            int stt = 0;
+            try
+            {
+                User user = await _context.Users.Where(x => x.Email == changePass.email).FirstOrDefaultAsync();
+                user.PassWord = changePass.newPassword;
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                stt = user.User_Id;
+            }
+            catch
+            {
+                stt = 0;
+            }
+            return stt;
         }
 
+        public async Task<bool> isPass(string email, string pass)
+        {
+            bool ret = false;
+            try
+            {
+                User user = await _context.Users.Where(x => x.Email == email && x.PassWord == pass)
+                    .FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+
+                }
+            }
+            catch
+            {
+                ret = false;
+            }
+            return ret;
+        }
+
+        public async Task<bool> isEmail(string email)
+        {
+            bool ret = false;
+            try
+            {
+                User user = await _context.Users.Where(x => x.Email == email)
+                    .FirstOrDefaultAsync();
+                if (user != null)
+                {
+                    ret = true;
+                }
+                else
+                {
+
+                    ret = false;
+                }
+            }
+            catch
+            {
+                ret = false;
+            }
+            return ret;
+        }
+        public async Task<List<Rule>> GetRules()
+        {
+            List<Rule> rule=new List<Rule>();
+            rule=await _context.Rules.ToListAsync();
+            return rule;
+        }
+        public async Task<List<Customer>> GetCustomers()
+        {
+            List<Customer> customers=new List<Customer>();
+            customers=await _context.Customers.ToListAsync();
+            return customers;
+        }
     }
 }

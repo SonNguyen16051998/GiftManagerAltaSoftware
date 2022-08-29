@@ -15,8 +15,8 @@ namespace GiftCodeManager.Models
         public DateTime Scanned_Date { get; set; }
         public bool Scanned_Status { get; set; }
         public bool Used_for_pin { get; set; }
-        public Customer Customer { get; set; }
-        public Barcode Barcode { get; set; }
+        public virtual Customer Customer { get; set; }
+        public virtual Barcode Barcode { get; set; }
 
     }
 }

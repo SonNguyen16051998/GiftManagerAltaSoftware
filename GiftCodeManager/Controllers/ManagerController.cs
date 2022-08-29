@@ -17,29 +17,17 @@ namespace GiftCodeManager.Controllers
             _manager = manager;
         }
 
-        [HttpGet]
-        [ActionName("dashboard")]
-        public async Task<List<ViewDashBoard>> GetDashBoard()
+        [HttpGet,ActionName("campaigns")]
+        public async Task<List<Campaign>> GetCampaigns()
         {
-            List<ViewDashBoard> dashboard = new List<ViewDashBoard>();
-            foreach(var item in await _manager.GetCampaigns())
-            {
-                foreach(var item1 in await _manager.GetWinnerByCampaign(item.Campaign_Id))
-                {
-                    dashboard.Add(new ViewDashBoard
-                    {
-                        Name_Campaign = item.Campaign_Name,
-                        Start_date = item.StartDate,
-                        End_Date = item.EndDate,
-                        Activated_Code=item.Activated_Code,
-                        Qty_Gift=item.Gifts.Count,
-                        Scanned=item.Barcode.Scanned,
-                        Winners=item1.Winner.Count
-                    });
-                }
-            }
-            return dashboard;
-        }//hiển thị danh sách campaign trên trang chính
+            return await _manager.GetCampaigns();
+        }//lấy toàn bộ chiến dịch
+
+        [HttpGet("{id}"),ActionName("getgiftbycampaign")]
+        public async Task<List<Gift>> getgiftbycampaign(int id)
+        {
+            return await _manager.GetWinnerByCampaign(id);
+        }//quà tặng của từng chiến dịch
 
         [HttpPost]
         [ActionName("campaign")]
@@ -127,5 +115,37 @@ namespace GiftCodeManager.Controllers
         {
             return await _manager.DetailsCampaign(id);
         }//chi tiết campaign
+
+        [HttpGet,ActionName("barcodehistory")]
+        public async Task<List<Usedbarcode_Customer>> BarcodeHistory()
+        {
+            return await _manager.GetBarcodeHistory();
+        }//lịch sử quét mã.
+
+        [HttpPut,ActionName("changepass")]
+        public async Task<IActionResult> ChangePass([FromBody] ViewChangePass changePass)
+        {
+            if (ModelState.IsValid)
+            {
+                if (await _manager.isPass(changePass.email, changePass.password))// kiểm tra mật khẩu củ đúng hay sai
+                {
+                    await _manager.ChangePass(changePass);
+                    return Ok("change pass successfuly");
+                }
+                return BadRequest("old password do not match");
+            }
+            return BadRequest("invalid data");
+        }
+
+        [HttpGet,ActionName("rule")]
+        public async Task<List<Rule>> GetRules()
+        {
+            return await _manager.GetRules();
+        }//hiển thị toàn bộ rule
+        [HttpGet,ActionName("customers")]
+        public async Task<List<Customer>> GetCustomers()
+        {
+            return await _manager.GetCustomers();
+        }//hiển thị toàn bộ khách hàng
     }
 }

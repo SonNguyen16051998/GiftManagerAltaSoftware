@@ -27,14 +27,21 @@ namespace GiftCodeManager.Controllers
         {
             if(ModelState.IsValid)
             {
-                int stt=await _customer.Register(custom);
-                if(stt==0)
+                if(await _customer.isEmail(custom.email) == true)//kiểm tra email đã tồn tại hay chưa
                 {
-                    return BadRequest("Register failure");
+                    return BadRequest("email already exist");
                 }
                 else
                 {
-                    return Ok("Register successfuly");
+                    int stt = await _customer.Register(custom);
+                    if (stt == 0)
+                    {
+                        return BadRequest("Register failure");
+                    }
+                    else
+                    {
+                        return Ok("Register successfuly");
+                    }
                 }
             }
             return BadRequest("Invalid Data");
@@ -79,5 +86,20 @@ namespace GiftCodeManager.Controllers
             }
             return BadRequest("invalid data");
         }// cập nhật thông tin cá nhân
+
+        [HttpPut,ActionName("changepass")]
+        public async Task<IActionResult> ChangePass(ViewChangePass changePass)
+        {
+            if(ModelState.IsValid)
+            {
+                if(await _customer.isPass(changePass.email,changePass.password))// kiểm tra mật khẩu củ đúng hay sai
+                {
+                    await _customer.ChangePass(changePass);
+                    return Ok("change pass successfuly");
+                }
+                return BadRequest("old password do not match");
+            }
+            return BadRequest("invalid data");
+        }//đổi mật khẩu
     }
 }

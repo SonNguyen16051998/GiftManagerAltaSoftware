@@ -32,7 +32,7 @@ namespace GiftCodeManager.Models
         public TimeSpan StartTime { get; set; }
         public DateTime EndDate { get; set; }
         public TimeSpan EndTime { get; set; }
-        public Barcode  Barcode { get; set; }
-        public ICollection<Gift> Gifts { get; set; }
+        public virtual Barcode  Barcode { get; set; }
+        public virtual ICollection<Gift> Gifts { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace GiftCodeManager.Models
         [Compare("Password",ErrorMessage ="retype pass not match")]
         [DataType(DataType.Password)]
         public string RetypePassword { get; set; }
-        public ICollection<Winner> Winner { get; set; }
-        public ICollection<Usedbarcode_Customer> Usedbarcode { get; set;}
+        public virtual ICollection<Winner> Winner { get; set; }
+        public virtual ICollection<Usedbarcode_Customer> Usedbarcode { get; set;}
     }
 }

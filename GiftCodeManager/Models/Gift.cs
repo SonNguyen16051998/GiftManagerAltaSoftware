@@ -18,7 +18,7 @@ namespace GiftCodeManager.Models
         [ForeignKey("Campaign")]
         public int Campaign_Id { get; set; }
         public Campaign Campaign { get; set; }
-        public Rule Rules { get; set; }
-        public ICollection<Winner> Winner { get; set; }
+        public virtual Rule Rules { get; set; }
+        public virtual ICollection<Winner> Winner { get; set; }
     }
 }

@@ -30,7 +30,7 @@ namespace GiftCodeManager.Models
         [Required]
         [Column(TypeName = "varchar(20)")]
         public string Postfix { get; set; }
-        public Campaign Campaign { get; set; }
-        public ICollection<Usedbarcode_Customer> usedbarcode_Customers { get; set; }
+        public virtual Campaign Campaign { get; set; }
+        public virtual ICollection<Usedbarcode_Customer> usedbarcode_Customers { get; set; }
     }
 }
