@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GiftCodeManager.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220825032321_gifmanager")]
+    [Migration("20220830025418_gifmanager")]
     partial class gifmanager
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,17 +23,17 @@ namespace GiftCodeManager.Migrations
 
             modelBuilder.Entity("GiftCodeManager.Models.Barcode", b =>
                 {
+                    b.Property<int>("BarcodeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
                     b.Property<int>("Campaign_Id")
                         .HasColumnType("int");
 
                     b.Property<string>("Charset")
                         .IsRequired()
                         .HasColumnType("varchar(20)");
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("Code_Length")
                         .HasColumnType("int");
@@ -61,7 +61,9 @@ namespace GiftCodeManager.Migrations
                     b.Property<bool>("Unlimited")
                         .HasColumnType("bit");
 
-                    b.HasKey("Campaign_Id");
+                    b.HasKey("BarcodeId");
+
+                    b.HasIndex("Campaign_Id");
 
                     b.ToTable("Barcodes");
                 });
@@ -213,7 +215,7 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("EndTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<TimeSpan>("EndTime_Repeat")
                         .HasColumnType("time");
@@ -221,8 +223,8 @@ namespace GiftCodeManager.Migrations
                     b.Property<double>("Gift_Amount")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("Monthly_On_Day")
-                        .HasColumnType("datetime2");
+                    b.Property<int>("Monthly_On_Day")
+                        .HasColumnType("int");
 
                     b.Property<int>("Probability")
                         .HasColumnType("int");
@@ -232,7 +234,7 @@ namespace GiftCodeManager.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<DateTime>("StartTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("date");
 
                     b.Property<TimeSpan>("StartTime_Repeat")
                         .HasColumnType("time");
@@ -340,8 +342,8 @@ namespace GiftCodeManager.Migrations
             modelBuilder.Entity("GiftCodeManager.Models.Barcode", b =>
                 {
                     b.HasOne("GiftCodeManager.Models.Campaign", "Campaign")
-                        .WithOne("Barcode")
-                        .HasForeignKey("GiftCodeManager.Models.Barcode", "Campaign_Id")
+                        .WithMany("Barcode")
+                        .HasForeignKey("Campaign_Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

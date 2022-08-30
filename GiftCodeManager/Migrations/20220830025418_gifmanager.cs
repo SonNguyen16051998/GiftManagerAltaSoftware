@@ -81,8 +81,8 @@ namespace GiftCodeManager.Migrations
                 name: "Barcodes",
                 columns: table => new
                 {
-                    Campaign_Id = table.Column<int>(type: "int", nullable: false),
-                    Code = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    BarcodeId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     Code_redemption_limit = table.Column<int>(type: "int", nullable: false),
                     Created_Date = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Unlimited = table.Column<bool>(type: "bit", nullable: false),
@@ -91,11 +91,12 @@ namespace GiftCodeManager.Migrations
                     Scanned = table.Column<int>(type: "int", nullable: false),
                     Code_Length = table.Column<int>(type: "int", nullable: false),
                     Prefix = table.Column<string>(type: "varchar(20)", nullable: false),
-                    Postfix = table.Column<string>(type: "varchar(20)", nullable: false)
+                    Postfix = table.Column<string>(type: "varchar(20)", nullable: false),
+                    Campaign_Id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Barcodes", x => x.Campaign_Id);
+                    table.PrimaryKey("PK_Barcodes", x => x.BarcodeId);
                     table.ForeignKey(
                         name: "FK_Barcodes_Campaigns_Campaign_Id",
                         column: x => x.Campaign_Id,
@@ -145,7 +146,7 @@ namespace GiftCodeManager.Migrations
                         name: "FK_Usedbarcode_Customers_Barcodes_Barcode_Id",
                         column: x => x.Barcode_Id,
                         principalTable: "Barcodes",
-                        principalColumn: "Campaign_Id",
+                        principalColumn: "BarcodeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Usedbarcode_Customers_Customers_Customer_Id",
@@ -162,11 +163,11 @@ namespace GiftCodeManager.Migrations
                     Gift_Id = table.Column<int>(type: "int", nullable: false),
                     Rule_Name = table.Column<string>(type: "nvarchar(255)", nullable: false),
                     Gift_Amount = table.Column<double>(type: "float", nullable: false),
-                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "date", nullable: false),
+                    EndTime = table.Column<DateTime>(type: "date", nullable: false),
                     AllDay = table.Column<bool>(type: "bit", nullable: false),
                     Probability = table.Column<int>(type: "int", nullable: false),
-                    Monthly_On_Day = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Monthly_On_Day = table.Column<int>(type: "int", nullable: false),
                     DayOfWeek = table.Column<int>(type: "int", nullable: false),
                     StartTime_Repeat = table.Column<TimeSpan>(type: "time", nullable: false),
                     EndTime_Repeat = table.Column<TimeSpan>(type: "time", nullable: false)
@@ -207,6 +208,11 @@ namespace GiftCodeManager.Migrations
                         principalColumn: "Gift_Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Barcodes_Campaign_Id",
+                table: "Barcodes",
+                column: "Campaign_Id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Gifts_Campaign_Id",

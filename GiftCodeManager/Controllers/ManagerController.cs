@@ -101,10 +101,19 @@ namespace GiftCodeManager.Controllers
         {
             if(ModelState.IsValid)
             {
-                if(await _manager.ScanBarcode(usedbarcode)>0)
+                if (await _manager.isCheckTime(usedbarcode))
                 {
-                    return Ok("scan barcode successfuly");
+                    if (await _manager.ScanBarcode(usedbarcode) > 0)
+                    {
+                        return Ok("scan barcode successfuly");
+                    }
+                    else
+                    {
+                        return BadRequest("code already used");
+                    }
                 }
+                else
+                    return BadRequest("the event has expired");
             }
             return BadRequest("failure");
         }// quét mã barcode

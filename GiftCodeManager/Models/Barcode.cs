@@ -7,11 +7,9 @@ namespace GiftCodeManager.Models
 {
     public class Barcode
     {
-        [Key,ForeignKey("Campaign")]
-        public int Campaign_Id { get; set; }
-        [Required]
-        [StringLength(50)]
-        public string Code { get; set;}
+        [Key]
+        public int BarcodeId { get; set;}
+        
         [Required]
         public int Code_redemption_limit { get; set; }
         public DateTime Created_Date { get; set; }
@@ -30,6 +28,8 @@ namespace GiftCodeManager.Models
         [Required]
         [Column(TypeName = "varchar(20)")]
         public string Postfix { get; set; }
+        [ForeignKey("Campaign")]
+        public int Campaign_Id { get; set; }
         public virtual Campaign Campaign { get; set; }
         public virtual ICollection<Usedbarcode_Customer> usedbarcode_Customers { get; set; }
     }

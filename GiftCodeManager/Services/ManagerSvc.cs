@@ -1,6 +1,7 @@
 ﻿using GiftCodeManager.Models;
 using GiftCodeManager.Models.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,7 @@ namespace GiftCodeManager.Services
         Task<int> ChangePass(ViewChangePass changePass);
         Task<List<Rule>> GetRules();
         Task<List<Customer>> GetCustomers();
+        Task<bool> isCheckTime(Usedbarcode_Customer usedbarcode);
     }
     public class ManagerSvc:IManager
     {
@@ -146,22 +148,33 @@ namespace GiftCodeManager.Services
             int stt = 0;
             try
             {
-                await _context.Usedbarcode_Customers.AddAsync(usedbarcode);//thêm vào bảng lịch sử quét
-                await _context.SaveChangesAsync();
-                stt = usedbarcode.Customer_Id;
-                if(stt >0)
+                Usedbarcode_Customer usedbar = await _context.Usedbarcode_Customers.
+                                                    Where(x => x.Customer_Id == usedbarcode.Customer_Id
+                                                        && x.Barcode_Id == usedbarcode.Barcode_Id).FirstOrDefaultAsync();
+                if(usedbar!=null)//kiểm tra barcode đã được sử dụng hay chưa.
                 {
-                    Barcode barcode=new Barcode();
-                    barcode=await _context.Barcodes.Where(x=>x.Campaign_Id==usedbarcode.Barcode_Id)
-                        .FirstOrDefaultAsync();
-                    barcode.Scanned += 1;
-                    _context.Barcodes.Update(barcode);
-                    await _context.SaveChangesAsync();// cập nhật  trường scanned khi có người quét mã
+                    stt = 0;
                 }
+                else
+                {
+                    await _context.Usedbarcode_Customers.AddAsync(usedbarcode);//thêm vào bảng lịch sử quét
+                    await _context.SaveChangesAsync();
+                    stt = usedbarcode.Customer_Id;
+                    if (stt > 0)
+                    {
+                        Barcode barcode = new Barcode();
+                        barcode = await _context.Barcodes.Where(x => x.BarcodeId == usedbarcode.Barcode_Id)
+                            .FirstOrDefaultAsync();
+                        barcode.Scanned += 1;
+                        _context.Barcodes.Update(barcode);
+                        await _context.SaveChangesAsync();// cập nhật  trường scanned khi có người quét mã
+                    }
+                }
+               
             }
             catch
             {
-                stt = 0;
+                
             }
             return stt;
         }
@@ -262,6 +275,28 @@ namespace GiftCodeManager.Services
             List<Customer> customers=new List<Customer>();
             customers=await _context.Customers.ToListAsync();
             return customers;
+        }
+
+        public async Task<bool> isCheckTime(Usedbarcode_Customer usedbarcode)
+        {
+            var fullTimeCampaign = await (from e in _context.Usedbarcode_Customers
+                                   join p in _context.Barcodes on e.Barcode_Id equals p.BarcodeId
+                                   join x in _context.Campaigns on p.Campaign_Id equals x.Campaign_Id
+                                   where e.Barcode_Id == usedbarcode.Barcode_Id
+                                   select new
+                                   {
+                                       sdate=x.StartDate,
+                                       edate=x.EndDate,
+                                   }).FirstOrDefaultAsync();
+            if(usedbarcode.Scanned_Date<=fullTimeCampaign.edate && usedbarcode.Scanned_Date>=fullTimeCampaign.sdate)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }
